@@ -1,36 +1,43 @@
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
 
-  {% seo %}
+{% include seo.html %}
 
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/img/icons/apple-touch-icon.png?v=qA3OXqyw77' | relative_url }}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{{'/assets/img/icons/favicon-32x32.png?v=qA3OXqyw77' | relative_url }}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{{'/assets/img/icons/favicon-16x16.png?v=qA3OXqyw77' | relative_url }}">
-  <link rel="manifest" href="{{ '/assets/img/icons/manifest.json?v=qA3OXqyw77' | relative_url }}">
-  <link rel="mask-icon" href="{{ '/assets/img/icons/safari-pinned-tab.svg?v=qA3OXqyw77' | relative_url }}" color="#5bbad5">
-  <!--[if IE]><link rel="shortcut icon" href="/assets/img/icons/favicon.ico?v=qA3OXqyw77"><![endif]-->
-  <link rel="shortcut icon" href="{{ '/assets/img/icons/favicon.ico?v=qA3OXqyw77' | relative_url }}">
-  <meta name="apple-mobile-web-app-title" content="Sleek">
-  <meta name="application-name" content="Sleek">
-  <meta name="msapplication-config" content="{{ '/assets/img/icons/browserconfig.xml?v=qA3OXqyw77' | relative_url }}">
-  <meta name="theme-color" content="#ffffff">
+<link href="{% if site.atom_feed.path %}{{ site.atom_feed.path }}{% else %}{{ '/feed.xml' | relative_url }}{% endif %}" type="application/atom+xml" rel="alternate" title="{{ site.title }} Feed">
 
-  {% if site.google_tag_manager %}
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {% include gtm.html %}
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
 
-  {% endif %}
+<!-- For all browsers -->
+<link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
 
-  <style class="inlineCSS">
-
-    {% include critical.css %}
-
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
   </style>
-  <link rel="preload" href="{{ '/assets/css/main.css' | relative_url }}" as="style" onload="this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}"></noscript>
-  <script type="text/javascript">
-   {% include loadCss.js %}
-  </script>
-</head>
+<![endif]-->
+
+{% if site.head_scripts %}
+  {% for script in site.head_scripts %}
+    {% if script contains "://" %}
+      {% capture script_path %}{{ script }}{% endcapture %}
+    {% else %}
+      {% capture script_path %}{{ script | relative_url }}{% endcapture %}
+    {% endif %}
+    <script src="{{ script_path }}"></script>
+  {% endfor %}
+{% endif %}
