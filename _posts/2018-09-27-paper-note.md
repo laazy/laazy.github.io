@@ -59,12 +59,12 @@ Attempt to improve reliability and throughput:
 
 ***large block size improve speed but waste space***
 
-![Amount of wasted space as a function of block size](https://github.com/laazy/laazy.github.io/blob/master/_posts/assets/table1-ffs.png)
+![Amount of wasted space as a function of block size](./assets/2018-09-27-paper-note/table1-ffs.png)
 To be able to use large blocks without undue waste, small, files must be stored in a more efficient way:
 - allowing the division of a single file system block into one or more fragments
 - The lower bound on the size of these fragments is constrained by the disk sector size, typically 512 bytes
 - The block map associated with each cylinder group records the space available in a cylinder group at the fragment level; to determine if a block is available
-![ Example layout of blocks and fragments in a 4096/1024 file system](https://github.com/laazy/laazy.github.io/blob/master/_posts/assets/figure1-ffs.png)
+![ Example layout of blocks and fragments in a 4096/1024 file system](./assets/2018-09-27-paper-note/figure1-ffs.png)
 
 ----
 write with fragments setting:
