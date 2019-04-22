@@ -1,7 +1,7 @@
 ---
 layout: post
 title: leetcode小结
-tags: paper note
+tags: leetcode
 ---
 
 # LeetCode初级算法总结
