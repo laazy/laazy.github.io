@@ -23,7 +23,7 @@ WebSocket 总体来说比较简单，只是一个和 HTTP 协议同级的双全�
 Spring 提供了一篇[教程](https://Spring.io/guides/gs/messaging-stomp-WebSocket/)以说明如何在 Spring 中使用 WebSocket，但是这篇教程反而引入了更多问题，而这些问题更多的与 WebSocket 无关，只是这篇教程额外增加的复杂性。
 
 - 什么是 STOMP？
-- 什么是 SockJs？
+- 什么是 SockJS？
 - 为什么在浏览器/Postman 中用 WebSocket 无法连接 Spring WebSocket？
 
 下面我将一一解释这些问题
@@ -46,11 +46,11 @@ Body^@
 `header:value`随着`COMMAND`的不同而不同，对应不同的`COMMAND`均有必须填入的`header`，其格式为`<key>:<value>`。
 `Body`则以 UTF-8 编码，最后以`NULL`结尾标识`BODY`的结束。
 
-### 什么是 SockJs[^sockjs]
+### 什么是 SockJS[^sockjs]
 
-SockJs 是一个浏览器端的 javascript 库，旨在提供一个 WebSocket-like 对象，允许不支持 WebSocket 协议的浏览器能够像支持 WebSocket 一样使用其提供的`SockJs`对象。SockJS 的目的是屏蔽双全工交流细节，使用上层应用封装 WebSocket、HTTP Streaming、HTTP Polling 等协议细节，使用户不需感知和考虑各种协议与浏览器以及服务端的兼容问题。
+SockJS 是一个浏览器端的 javascript 库，旨在提供一个 WebSocket-like 对象，允许不支持 WebSocket 协议的浏览器能够像支持 WebSocket 一样使用其提供的`SockJS`对象。SockJS 的目的是屏蔽双全工交流细节，使用上层应用封装 WebSocket、HTTP Streaming、HTTP Polling 等协议细节，使用户不需感知和考虑各种协议与浏览器以及服务端的兼容问题。
 
-SockJs 客户端需要服务端也有对应的 SockJs 服务端，但服务端 SockJS 也支持原生 WebSocket 连接。
+SockJS 客户端需要服务端也有对应的 SockJS 服务端，但服务端 SockJS 也支持原生 WebSocket 连接。
 
 ### 为什么在浏览器/Postman 中用 WebSocket 无法连接 Spring WebSocket？
 
@@ -58,16 +58,17 @@ SockJs 客户端需要服务端也有对应的 SockJs 服务端，但服务端 S
 这正是由于按照教程中的
 
 ```java
-registry.addEndpoint("/gs-guide-WebSocket").withSockJs();
+registry.addEndpoint("/gs-guide-WebSocket").withSockJS();
 ```
 
-实际上启用了`SockJsServiceRegistration`，使得在获得 Handler Mapping 时，将所有此处设置的路径全部映射使用了`SockJsHttpRequestHandler`来处理，进而使原生`WebSocket`对象无法连接至服务端给定端点。
+实际上启用了`SockJSServiceRegistration`，使得在获得 Handler Mapping 时，将所有此处设置的路径全部映射使用了`SockJSHttpRequestHandler`来处理，进而使原生`WebSocket`对象无法连接至服务端给定端点。
 
 修复方法有两条：
 
-- 去掉`withSockJs()`，在服务端不使用 SockJs。
-- 在连接 URI 后缀上`/WebSocket`，即`ws://localhost:8080/gs-guide-WebSocket/WebSocket`，告诉 Spring WebSocket 使用原生 WebSocket 连接。
+- 去掉`withSockJS()`，在服务端不使用 SockJS。
+- 在连接 URI 后缀上`/WebSocket`，即`ws://localhost:8080/gs-guide-WebSocket/WebSocket`，告诉 Spring WebSocket 使用原生 WebSocket 连接。[^sockjs_spring]
 
-[^websocket]: [wiki pedia of WebSocket](https://en.wikipedia.org/wiki/WebSocket#:~:text=WebSocket%20is%20a,Mozilla%2C%20and%20Microsoft).)
+[^websocket]: [wikipedia of WebSocket](https://en.wikipedia.org/wiki/WebSocket#:~:text=WebSocket%20is%20a,Mozilla%2C%20and%20Microsoft).)
 [^stomp]: [STOMP Official Document](https://stomp.github.io/stomp-specification-1.2.html)
-[^sockjs]: [SockJs github](https://github.com/SockJs/SockJs-client)
+[^sockjs]: [SockJS github](https://github.com/SockJS/SockJS-client)
+[^sockjs_spring]: [Spring SockJS overview](https://docs.Spring.io/Spring-framework/docs/4.3.x/Spring-framework-reference/html/websocket.html#websocket-fallback-SockJS-overview)
