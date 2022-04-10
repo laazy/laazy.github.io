@@ -10,6 +10,8 @@ tags: Spring kotlin WebSocket stomp
 
 我们一般在 Spring 框架中开发 Web 应用，往往使用**RESTful 风格**或**MVC 模式**，这两种方式都有一个共同点就是**只允许单向通信**，也就是客户端发送请求，服务端返回响应的方式。但是开发一个应用很自然会有双向通信的需求，而 IETF 在 2011 年在 `RFC 6455` 中提出了 WebSocket 协议，允许客户端和服务端之间进行**全双工通信**。[^websocket]
 
+本文将介绍 WebSocket 以及在 Spring 中使用 Websocket 会遇到的一系列问题。
+
 ## WebSocket 协议介绍 [^websocket]
 
 WebSocket 与 HTTP 协议一样，都属于 OSI 七层模型中的应用层，都依赖于 TCP 协议进行数据传输。由于为了浏览器使用，WebSocket 协议被设计为与 HTTP 协议兼容，都默认运行于 443 或者 80 端口，并且 WebSocket 协议使用 HTTP 协议进行握手，握手完成后，将连接转为 WebSocket 协议。
@@ -17,6 +19,8 @@ WebSocket 与 HTTP 协议一样，都属于 OSI 七层模型中的应用层，�
 WebSocket 协议使用`ws://`或`wss://`作为 URI 的开头，其中`wss://`表示 WebSocket Secure，其建立连接后连接将会一直存在，客户端和服务端可以双向发送信息，任意一方断开连接则连接关闭。
 
 WebSocket 总体来说比较简单，只是一个和 HTTP 协议同级的双全工协议，比较重要的是以什么格式在 WebSocket 上传输数据以及 Server 和 Client 如何处理 WebSocket 连接和信息。
+
+WebSocket 并**不遵循 Same Origin Policy(SOP)**，因此当需要检查 SOP 时，需要自行编写代码。
 
 ## Spring WebSocket
 
@@ -68,7 +72,8 @@ registry.addEndpoint("/gs-guide-WebSocket").withSockJS();
 - 去掉`withSockJS()`，在服务端不使用 SockJS。
 - 在连接 URI 后缀上`/WebSocket`，即`ws://localhost:8080/gs-guide-WebSocket/WebSocket`，告诉 Spring WebSocket 使用原生 WebSocket 连接。[^sockjs_spring]
 
+
 [^websocket]: [wikipedia of WebSocket](https://en.wikipedia.org/wiki/WebSocket#:~:text=WebSocket%20is%20a,Mozilla%2C%20and%20Microsoft).)
 [^stomp]: [STOMP Official Document](https://stomp.github.io/stomp-specification-1.2.html)
 [^sockjs]: [SockJS github](https://github.com/SockJS/SockJS-client)
-[^sockjs_spring]: [Spring SockJS overview](https://docs.Spring.io/Spring-framework/docs/4.3.x/Spring-framework-reference/html/websocket.html#websocket-fallback-SockJS-overview)
+[^sockjs_spring]: [Spring SockJS overview](https://docs.spring.io/spring-framework/docs/5.3.x/reference/html/web.html#websocket-fallback-sockjs-overview)
