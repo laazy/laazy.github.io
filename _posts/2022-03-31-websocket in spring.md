@@ -4,7 +4,7 @@ title: WebSocket 是什么以及如何在 Spring 中使用 WebSocket
 tags: Spring kotlin WebSocket stomp
 ---
 
-# WebSocket 是什么以及如何在 Spring 中使用 WebSocket
+# WebSocket 是什么以及如何在 Spring 中使用 WebSocket （WebSocket 系列一）
 
 ## 概述
 
@@ -71,7 +71,6 @@ registry.addEndpoint("/gs-guide-WebSocket").withSockJS();
 
 - 去掉`withSockJS()`，在服务端不使用 SockJS。
 - 在连接 URI 后缀上`/WebSocket`，即`ws://localhost:8080/gs-guide-WebSocket/WebSocket`，告诉 Spring WebSocket 使用原生 WebSocket 连接。[^sockjs_spring]
-
 
 [^websocket]: [wikipedia of WebSocket](https://en.wikipedia.org/wiki/WebSocket#:~:text=WebSocket%20is%20a,Mozilla%2C%20and%20Microsoft).)
 [^stomp]: [STOMP Official Document](https://stomp.github.io/stomp-specification-1.2.html)
